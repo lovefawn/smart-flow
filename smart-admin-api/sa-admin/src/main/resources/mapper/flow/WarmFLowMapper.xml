@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="net.lab1024.sa.admin.module.flow.mapper.WarmFlowMapper">
+
+    <resultMap type="net.lab1024.sa.admin.module.flow.domain.vo.FlowTaskVO" id="FlowTaskResult">
+        <result property="id" column="id"/>
+        <result property="nodeCode" column="node_code"/>
+        <result property="nodeName" column="node_name"/>
+        <result property="nodeType" column="node_type"/>
+        <result property="definitionId" column="definition_id"/>
+        <result property="instanceId" column="instance_id"/>
+        <result property="flowStatus" column="flow_status"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="tenantId" column="tenant_id"/>
+        <result property="businessId" column="business_id"/>
+        <result property="flowName" column="flow_name"/>
+        <result property="formCustom" column="form_custom"/>
+        <result property="formPath" column="form_path"/>
+        <result property="activityStatus" column="activity_status"/>
+        <result property="delFlag" column="del_flag"/>
+    </resultMap>
+
+    <resultMap type="org.dromara.warm.flow.orm.entity.FlowUser" id="FlowUserResult">
+        <result property="id" column="user_id"/>
+        <result property="type" column="type"/>
+        <result property="processedBy" column="processed_by"/>
+        <result property="associated" column="associated"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="tenantId" column="tenant_id"/>
+        <result property="delFlag" column="del_flag"/>
+    </resultMap>
+
+    <resultMap type="org.dromara.warm.flow.orm.entity.FlowHisTask" id="FlowHisTaskResult">
+        <result property="id" column="id"/>
+        <result property="nodeCode" column="node_code"/>
+        <result property="nodeName" column="node_name"/>
+        <result property="nodeType" column="node_type"/>
+        <result property="targetNodeCode" column="target_node_code"/>
+        <result property="targetNodeName" column="target_node_name"/>
+        <result property="approver" column="approver"/>
+        <result property="collaborator" column="collaborator"/>
+        <result property="definitionId" column="definition_id"/>
+        <result property="instanceId" column="instance_id"/>
+        <result property="taskId" column="task_id"/>
+        <result property="cooperateType" column="cooperate_type"/>
+        <result property="flowStatus" column="flow_status"/>
+        <result property="message" column="message"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="businessId" column="business_id"/>
+        <result property="tenantId" column="tenant_id"/>
+        <result property="formPath" column="form_path"/>
+        <result property="flowName" column="flow_name"/>
+        <result property="delFlag" column="del_flag"/>
+    </resultMap>
+
+    <select id="toDoPage" resultMap="FlowTaskResult">
+        SELECT
+        distinct t.id,
+            t.node_code,
+            t.node_name,
+            t.node_type,
+            t.definition_id,
+            t.instance_id,
+            t.create_time,
+            t.update_time,
+            t.tenant_id,
+            i.business_id,
+            i.flow_status,
+            i.activity_status,
+            d.flow_name,
+            t.form_custom,
+            t.form_path
+        FROM flow_task AS t
+        LEFT JOIN flow_user uu ON uu.associated = t.id
+        LEFT JOIN flow_definition d on t.definition_id = d.id
+        LEFT JOIN flow_instance i on t.instance_id = i.id
+        <where>
+            t.node_type = 1 and t.del_flag = 0
+            <if test="task.permissionList != null and task.permissionList.size > 0">
+                AND  uu.processed_by in
+                <foreach item="permission" collection="task.permissionList" open="(" separator="," close=")">
+                    #{permission}
+                </foreach>
+            </if>
+            <if test="task.nodeCode != null and task.nodeCode != ''">and t.node_code = #{task.nodeCode}</if>
+            <if test="task.nodeName != null and task.nodeName != ''">and t.node_name like concat('%',
+                #{task.nodeName}, '%')
+            </if>
+            <if test="task.instanceId != null ">and t.instance_id = #{task.instanceId}</if>
+        </where>
+        order by t.create_time desc
+    </select>
+
+    <select id="donePage" resultMap="FlowHisTaskResult">
+        select
+            t.id,
+            t.node_code,
+            t.node_name,
+            t.cooperate_type,
+            t.approver,
+            t.collaborator,
+            t.node_type,
+            t.target_node_code,
+            t.target_node_name,
+            t.definition_id,
+            t.instance_id,
+            i.flow_status,
+            t.message,
+            t.ext,
+            t.create_time,
+            t.update_time,
+            t.tenant_id,
+            i.business_id,
+            t.form_path,
+            d.flow_name
+        from ( SELECT MAX(id) as id
+               FROM flow_his_task
+               <where>
+                   <if test="hisTask.permissionList != null and hisTask.permissionList.size > 0">
+                       AND approver in
+                       <foreach item="permission" collection="hisTask.permissionList" open="(" separator="," close=")">
+                           #{permission}
+                       </foreach>
+                   </if>
+                   <if test="hisTask.nodeCode != null  and hisTask.nodeCode != ''">and node_code =
+                       #{hisTask.nodeCode}
+                   </if>
+                   <if test="hisTask.nodeName != null  and hisTask.nodeName != ''">and node_name like concat('%',
+                       #{hisTask.nodeName}, '%')
+                   </if>
+                   <if test="hisTask.instanceId != null ">and instance_id = #{hisTask.instanceId}</if>
+               </where>
+              GROUP BY instance_id ) tmp
+        LEFT JOIN flow_his_task t ON t.id = tmp.id
+        LEFT JOIN flow_definition d on t.definition_id = d.id
+        LEFT JOIN flow_instance i on t.instance_id = i.id
+        order by t.create_time desc
+    </select>
+    <select id="copyPage" resultMap="FlowTaskResult">
+        SELECT
+            c.nick_name AS approver,
+            b.flow_status,
+            b.business_id,
+            a.create_time,
+            b.node_name,
+            b.id ,
+            d.flow_name
+        FROM
+            `flow_user` a
+                LEFT JOIN flow_instance b ON a.associated = b.id
+                LEFT JOIN sys_user c ON b.create_by = c.user_id
+                LEFT JOIN flow_definition d on b.definition_id=d.id
+        WHERE
+            a.type = 4
+        <if test="task.flowName != null and task.flowName != ''">and c.nick_name like concat('%',
+            #{task.flowName}, '%')
+          </if>
+        <if test="task.nodeName != null and task.nodeName != ''">and b.node_name like concat('%',
+            #{task.nodeName}, '%')
+        </if>
+        <if test="task.nodeType != null">and b.node_type = #{task.nodeType}</if>
+        ORDER BY create_time DESC
+    </select>
+
+    <select id="idReverseDisplayName" parameterType="long" resultType="net.lab1024.sa.admin.module.system.employee.domain.entity.EmployeeEntity">
+        select employee_id as employeeId,login_name as loginName,actual_name as actualName
+        from t_employee where employee_id in
+        <foreach item="id" collection="ids" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </select>
+</mapper>

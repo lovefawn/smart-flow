@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="net.lab1024.sa.admin.module.system.role.dao.RoleDao">
+
+    <resultMap id="RoleEntity"
+               type="net.lab1024.sa.admin.module.system.role.domain.entity.RoleEntity"></resultMap>
+
+
+    <select id="getByRoleName" resultMap="RoleEntity">
+        SELECT *
+        FROM t_role
+        WHERE role_name = #{roleName}
+    </select>
+
+
+    <select id="getByRoleCode" resultMap="RoleEntity">
+        SELECT *
+        FROM t_role
+        WHERE role_code = #{roleCode}
+    </select>
+    <!-- 分页查询 -->
+    <select id="queryPage" resultType="net.lab1024.sa.admin.module.system.role.domain.vo.RoleVO">
+        SELECT
+        *
+        FROM t_role
+        <where>
+            <!--关键字查询-->
+            <if test="queryForm.roleCode != null and queryForm.roleCode != ''">
+                INSTR(t_role.role_code,#{queryForm.roleCode})
+            </if>
+            <if test="queryForm.roleName != null and queryForm.roleName != ''">
+                INSTR(t_role.role_name,#{queryForm.roleName})
+            </if>
+            <if test="queryForm.startTime != null">
+                AND DATE_FORMAT(t_role.create_time, '%Y-%m-%d') &gt;= DATE_FORMAT(#{queryForm.startTime},
+                '%Y-%m-%d')
+            </if>
+            <if test="queryForm.endTime != null">
+                AND DATE_FORMAT(t_role.create_time, '%Y-%m-%d') &lt;= DATE_FORMAT(#{queryForm.endTime}, '%Y-%m-%d')
+            </if>
+        </where>
+    </select>
+</mapper>
