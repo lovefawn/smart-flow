@@ -196,7 +196,7 @@
 
   <a-modal title="流程图"
            :open="flowChart"
-           width="80%"
+           width="70%"
            @cancel="onClose"
            @ok="onClose">
     <img :src="imgUrl" width="100%" style="margin:0 auto"/>
