@@ -140,10 +140,10 @@
 			}
 		},
 		{
-			"path" : "pages/list2/list",
+			"path" : "pages/flow/list",
 			"style" : 
 			{
-				"navigationBarTitleText" : "常见列表样式2",
+				"navigationBarTitleText" : "流程管理",
 				"enablePullDownRefresh" : false,
 				"navigationBarBackgroundColor": "#fff"
 			}
@@ -184,17 +184,17 @@
 			"selectedIconPath": "static/images/tabbar/home-icon-h.png",
 			"text": "首页"
 		},
+//		{
+//		  "pagePath": "pages/list/list",
+//		  "iconPath": "static/images/tabbar/list-icon.png",
+//		  "selectedIconPath": "static/images/tabbar/list-icon-h.png",
+//		  "text": "常见列表1"
+//		},
 		{
-		  "pagePath": "pages/list/list",
+		  "pagePath": "pages/flow/list",
 		  "iconPath": "static/images/tabbar/list-icon.png",
 		  "selectedIconPath": "static/images/tabbar/list-icon-h.png",
-		  "text": "常见列表1"
-		},
-		{
-		  "pagePath": "pages/list2/list",
-		  "iconPath": "static/images/tabbar/list-icon.png",
-		  "selectedIconPath": "static/images/tabbar/list-icon-h.png",
-		  "text": "常见列表2"
+		  "text": "流程"
 		},
 		{
 		  "pagePath": "pages/message/message",

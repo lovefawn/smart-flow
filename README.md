@@ -23,3 +23,8 @@
 ### **感谢项目**
 - **SmartAdmin(https://smartadmin.vip/)** 基于SpringBoot2/3+Sa-Token+Mybatis-Plus 和 Vue3+Ant Design Vue+Uni-App+Uni-UI，并以 <font color="#DC143C">**「高质量代码」为核心，「简洁、高效、安全」**</font>的快速开发平台。
 - **Dromara Warm-Flow(https://warm-flow.dromara.org/)** 是一款国产开源工作流引擎，以​​轻量简洁​​（仅7张核心表）和​​高扩展性​​为核心优势，支持通过JAR包快速集成流程设计器，提供​​全场景审批功能​​（包括会签、转办、委派等20+操作）和​​动态规则引擎​​（如条件表达式、办理人变量表达式），内置​​可视化流程图​​（支持节点颜色/文字自定义）并兼容多ORM框架及数据库。
+- **hh-vue(https://gitee.com/min290/hh-vue)** 基于ruoyi-vue原版，集成自研Warm-Flow工作流。
+- **RuoYi-Vue-Plus(https://gitee.com/dromara/RuoYi-Vue-Plus)** 多租户后台管理系统 重写RuoYi-Vue所有功能 集成 Sa-Token、Mybatis-Plus、Flowable、SpringDoc、Hutool、OSS 定期同步
+
+### **严正声明**
+**SmartFlow**在实现中参考学习了hh-vue项目和RuoYi-Vue-Plus项目的实现方案，感谢SmartAdmin作者@卓大、Warm-Flow和hh-vue作者@晓华、RuoYi-Vue-Plus作者@疯狂的狮子Li。其中涉及的代码版权归原作者所有。
