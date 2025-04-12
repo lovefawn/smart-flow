@@ -9,16 +9,16 @@
 - 后端：Java17 + SpringBoot3 + Sa Token + Mybatis-plus + 多种数据库
 
 ### **系统截图**
-![](docs\image\flow-defince.png)
-![](docs\image\flow-defince-edit.png)
-![](docs\image\flow-defince-design.png)
-![](docs\image\flow-defince-chart.png)
-![](docs\image\flow-run-todo.png)
-![](docs\image\flow-run-done.png)
-![](docs\image\flow-run-ref.png)
-![](docs\image\flow-run-his.png)
-![](docs\image\flow-run-notice.png)
-![](docs\image\flow-run-approve.png)
+![](docs/image/flow-defince.png)
+![](docs/image/flow-defince-edit.png)
+![](docs/image/flow-defince-design.png)
+![](docs/image/flow-defince-chart.png)
+![](docs/image/flow-run-todo.png)
+![](docs/image/flow-run-done.png)
+![](docs/image/flow-run-ref.png)
+![](docs/image/flow-run-his.png)
+![](docs/image/flow-run-notice.png)
+![](docs/image/flow-run-approve.png)
 
 ### **感谢项目**
 - **SmartAdmin(https://smartadmin.vip/)** 基于SpringBoot2/3+Sa-Token+Mybatis-Plus 和 Vue3+Ant Design Vue+Uni-App+Uni-UI，并以 <font color="#DC143C">**「高质量代码」为核心，「简洁、高效、安全」**</font>的快速开发平台。
