@@ -12,24 +12,50 @@
  - 2025-06-01：v3.0.1 更新 Warm-Flow升级到1.7.3，增加请假流程示例，支持移动端工作流。
 
 ### **网页版截图**
-![](docs/image/flow-defince.png)
-![](docs/image/flow-defince-edit.png)
-![](docs/image/flow-defince-design.png)
-![](docs/image/flow-defince-chart.png)
-![](docs/image/flow-run-todo.png)
-![](docs/image/flow-run-done.png)
-![](docs/image/flow-run-ref.png)
-![](docs/image/flow-run-his.png)
-![](docs/image/flow-run-notice.png)
-![](docs/image/flow-run-approve.png)
+<div style="display: flex; flex-wrap: wrap; gap: 15px; justify-content: center;">
+  <div style="flex: 0 0 calc(50% - 15px); max-width: calc(50% - 15px);">
+    <img src="docs/image/flow-defince.png" alt="流程定义" style="width:100%; border-radius:8px; box-shadow:0 3px 8px rgba(0,0,0,0.1);">
+  </div>
+  <div style="flex: 0 0 calc(50% - 15px); max-width: calc(50% - 15px);">
+    <img src="docs/image/flow-defince-edit.png" alt="流程编辑" style="width:100%; border-radius:8px; box-shadow:0 3px 8px rgba(0,0,0,0.1);">
+  </div>
+  <div style="flex: 0 0 calc(50% - 15px); max-width: calc(50% - 15px);">
+    <img src="docs/image/flow-defince-design.png" alt="流程设计" style="width:100%; border-radius:8px; box-shadow:0 3px 8px rgba(0,0,0,0.1);">
+  </div>
+  <div style="flex: 0 0 calc(50% - 15px); max-width: calc(50% - 15px);">
+    <img src="docs/image/flow-defince-chart.png" alt="流程图" style="width:100%; border-radius:8px; box-shadow:0 3px 8px rgba(0,0,0,0.1);">
+  </div>
+  <div style="flex: 0 0 calc(50% - 15px); max-width: calc(50% - 15px);">
+    <img src="docs/image/flow-run-todo.png" alt="待办任务" style="width:100%; border-radius:8px; box-shadow:0 3px 8px rgba(0,0,0,0.1);">
+  </div>
+  <div style="flex: 0 0 calc(50% - 15px); max-width: calc(50% - 15px);">
+    <img src="docs/image/flow-run-done.png" alt="已完成" style="width:100%; border-radius:8px; box-shadow:0 3px 8px rgba(0,0,0,0.1);">
+  </div>
+  <div style="flex: 0 0 calc(50% - 15px); max-width: calc(50% - 15px);">
+    <img src="docs/image/flow-run-ref.png" alt="流程参考" style="width:100%; border-radius:8px; box-shadow:0 3px 8px rgba(0,0,0,0.1);">
+  </div>
+  <div style="flex: 0 0 calc(50% - 15px); max-width: calc(50% - 15px);">
+    <img src="docs/image/flow-run-his.png" alt="历史记录" style="width:100%; border-radius:8px; box-shadow:0 3px 8px rgba(0,0,0,0.1);">
+  </div>
+  <div style="flex: 0 0 calc(50% - 15px); max-width: calc(50% - 15px);">
+    <img src="docs/image/flow-run-notice.png" alt="通知" style="width:100%; border-radius:8px; box-shadow:0 3px 8px rgba(0,0,0,0.1);">
+  </div>
+  <div style="flex: 0 0 calc(50% - 15px); max-width: calc(50% - 15px);">
+    <img src="docs/image/flow-run-approve.png" alt="审批" style="width:100%; border-radius:8px; box-shadow:0 3px 8px rgba(0,0,0,0.1);">
+  </div>
+</div>
 
 ### **移动版截图**
-![](docs/image/flow-app-login.png)
-![](docs/image/flow-app-index.png)
-![](docs/image/flow-app-todo.png)
-![](docs/image/flow-app-task-detail.png)
-![](docs/image/flow-app-task-approve.png)
-![](docs/image/flow-app-done-task.png)
+<div style="display: flex; flex-wrap: wrap; gap: 10px; justify-content: space-between;">
+  <img src="docs/image/flow-app-login.png" alt="登录界面" style="width: calc(33.33% - 10px);">
+  <img src="docs/image/flow-app-index.png" alt="首页" style="width: calc(33.33% - 10px);">
+  <img src="docs/image/flow-app-todo.png" alt="待办事项" style="width: calc(33.33% - 10px);">
+</div>
+<div style="display: flex; flex-wrap: wrap; gap: 10px; justify-content: space-between;">
+  <img src="docs/image/flow-app-task-detail.png" alt="任务详情" style="width: calc(33.33% - 10px);">
+  <img src="docs/image/flow-app-task-approve.png" alt="任务审批" style="width: calc(33.33% - 10px);">
+  <img src="docs/image/flow-app-done-task.png" alt="已办任务" style="width: calc(33.33% - 10px);">
+</div>
 
 ### **感谢项目**
 - **SmartAdmin(https://smartadmin.vip/)** 基于SpringBoot2/3+Sa-Token+Mybatis-Plus 和 Vue3+Ant Design Vue+Uni-App+Uni-UI，并以 <font color="#DC143C">**「高质量代码」为核心，「简洁、高效、安全」**</font>的快速开发平台。
