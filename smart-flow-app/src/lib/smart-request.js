@@ -82,8 +82,8 @@ export const request = function (url, method, data) {
 /**
  * get请求
  */
-export const getRequest = (url) => {
-  return request(url, 'GET');
+export const getRequest = (url, params) => {
+  return request(url, 'GET', params);
 };
 
 /**

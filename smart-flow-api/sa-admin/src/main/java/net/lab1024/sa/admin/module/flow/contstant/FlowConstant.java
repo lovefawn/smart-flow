@@ -18,6 +18,11 @@ public interface FlowConstant {
      */
     String PROCESS_INSTANCE_ID = "processInstanceId";
 
+
+    /**
+     * 业务表
+     */
+    String BUSINESS_TABLE = "businessTable";
     /**
      * 业务id
      */

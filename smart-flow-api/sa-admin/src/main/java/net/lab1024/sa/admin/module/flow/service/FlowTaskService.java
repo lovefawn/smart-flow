@@ -57,4 +57,9 @@ public interface FlowTaskService {
     List<FlowTask> selectByInstId(Long instanceId);
 
     boolean approveTaskByInstance(ApproveTaskInsForm approveTaskInsForm);
+
+
+    FlowTaskVO getTaskDetailById(Long taskId);
+
+    FlowTaskVO getDoneTaskDetailById(Long taskId);
 }

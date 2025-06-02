@@ -8,6 +8,9 @@
 - 移动端：uniapp (vue3版本) + uni-ui + （同时支持APP、小程序、H5）
 - 后端：Java17 + SpringBoot3 + Sa Token + Mybatis-plus + 多种数据库
 
+### **更新历史**
+ - 2025-06-01：v3.0.1 更新 Warm-Flow升级到1.7.3，增加请假流程示例，支持移动端工作流。
+
 ### **系统截图**
 ![](docs/image/flow-defince.png)
 ![](docs/image/flow-defince-edit.png)

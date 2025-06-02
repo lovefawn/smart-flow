@@ -29,4 +29,6 @@ public interface DictDataDao extends BaseMapper<DictDataEntity> {
     DictDataEntity selectByDictIdAndValue(@Param("dictId") Long dictId, @Param("dataValue") String dataValue);
 
     List<DictDataVO> getAll();
+
+    List<DictDataVO> queryDictDataByCode(@Param("dictCode")String dictCode);
 }

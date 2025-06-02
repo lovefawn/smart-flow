@@ -28,12 +28,12 @@ const props = defineProps({
 //字段
 const columns = ref([
   { title: '序号',width: 50,customRender: ({ index }) => index + 1 },
-  { title: '开始节点名称', dataIndex: 'nodeName' },
-  { title: '结束节点名称', dataIndex: 'targetNodeName' },
+  { title: '审批时间', dataIndex: 'updateTime' },
   { title: '审批人', dataIndex: 'approver' },
+  { title: '节点', dataIndex: 'nodeName' },
+  // { title: '结束节点名称', dataIndex: 'targetNodeName' },
   { title: '流程状态', dataIndex: 'flowStatus' },
   { title: '审批意见', dataIndex: 'message' },
-  { title: '创建时间', dataIndex: 'createTime' },
 ]);
 const tableData = ref();
 

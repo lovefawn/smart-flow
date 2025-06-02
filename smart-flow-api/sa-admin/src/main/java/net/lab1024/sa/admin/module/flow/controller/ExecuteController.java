@@ -100,18 +100,18 @@ public class ExecuteController {
      *
      * @param startProcessForm 启动流程参数
      */
-    @SaCheckPermission("flow:execute:toDoPage")
+    @SaCheckPermission("flow:execute:startTask")
     @PostMapping("/startWorkFlow")
     public ResponseDTO<StartProcessReturnVO> startWorkFlow(@Validated() @RequestBody StartProcessForm startProcessForm) {
         StartProcessReturnVO startProcessReturn = flowTaskService.startWorkFlow(startProcessForm);
         return ResponseDTO.ok( startProcessReturn);
     }
     /**
-     * 办理任务
+     * 审批任务
      *
      * @param completeTaskForm 办理任务参数
      */
-    @SaCheckPermission("flow:execute:completeTask")
+    @SaCheckPermission("flow:execute:approve")
     @PostMapping("/completeTask")
     public ResponseDTO<Void> completeTask(@RequestBody CompleteTaskForm completeTaskForm) {
         boolean result = flowTaskService.completeTask(completeTaskForm);
@@ -122,7 +122,7 @@ public class ExecuteController {
     }
 
     /**
-     * 办理任务
+     *审批任务
      *
      * @param approveTaskInsForm 办理任务参数
      */
@@ -140,7 +140,6 @@ public class ExecuteController {
     /**
      * 分页待办任务列表
      */
-    @SaCheckPermission("flow:execute:toDoPage")
     @GetMapping("/toDoPage")
     public ResponseDTO<PageResult<FlowTaskVO>> toDoPage(FlowTask flowTask, @RequestParam(defaultValue = "1") int pageNum,
                                                         @RequestParam(defaultValue = "10") int pageSize) {
@@ -197,7 +196,6 @@ public class ExecuteController {
      * 分页抄送任务列表
      * author：暗影
      */
-    @SaCheckPermission("flow:execute:copyPage")
     @GetMapping("/copyPage")
     public ResponseDTO<PageResult<FlowHisTask>> copyPage(FlowTask flowTask, @RequestParam(defaultValue = "1") int pageNum,
                                                         @RequestParam(defaultValue = "10") int pageSize) {
@@ -221,7 +219,6 @@ public class ExecuteController {
     /**
      * 分页已办任务列表
      */
-    @SaCheckPermission("flow:execute:donePage")
     @GetMapping("/donePage")
     public ResponseDTO<PageResult<FlowHisTask>> donePage(FlowHisTask flowHisTask, @RequestParam(defaultValue = "1") int pageNum,
                                                          @RequestParam(defaultValue = "10") int pageSize) {
@@ -307,7 +304,6 @@ public class ExecuteController {
     /**
      * 查询已办任务历史记录
      */
-    @SaCheckPermission("flow:execute:doneList")
     @GetMapping("/doneList/{instanceId}")
     public ResponseDTO<List<FlowHisTask>> doneList(@PathVariable("instanceId") Long instanceId) {
         List<HisTask> flowHisTasks = hisTaskService.orderById().desc().list(new FlowHisTask().setInstanceId(instanceId));
@@ -350,9 +346,31 @@ public class ExecuteController {
     }
 
     /**
+     * 根据taskId查询代表任务
+     *
+     * @param taskId
+     * @return
+     */
+    @GetMapping("/getTaskDetail/{taskId}")
+    public ResponseDTO<FlowTaskVO> getTaskDetailById(@PathVariable("taskId") Long taskId) {
+        return ResponseDTO.ok(flowTaskService.getTaskDetailById(taskId));
+    }
+
+    /**
+     * 根据taskId查询代表任务
+     *
+     * @param taskId
+     * @return
+     */
+    @GetMapping("/getDoneTaskDetail/{taskId}")
+    public ResponseDTO<FlowTaskVO> getDoneTaskDetail(@PathVariable("taskId") Long taskId) {
+        return ResponseDTO.ok(flowTaskService.getDoneTaskDetailById(taskId));
+    }
+
+    /**
      * 查询跳转任意节点列表
      */
-    @SaCheckPermission("flow:execute:doneList")
+    @SaCheckPermission("flow:execute:goAnyNode")
     @GetMapping("/anyNodeList/{instanceId}")
     public ResponseDTO<List<Node>> anyNodeList(@PathVariable("instanceId") Long instanceId) {
         Instance instance = insService.getById(instanceId);
@@ -465,7 +483,6 @@ public class ExecuteController {
      * @author liangli
      * @date 2024/8/21 17:08
      **/
-    @SaCheckPermission("flow:definition:query")
     @GetMapping(value = "/idReverseDisplayName/{ids}")
     public ResponseDTO<List<EmployeeEntity>> idReverseDisplayName(@PathVariable Long[] ids) {
         return ResponseDTO.ok(flowTaskService.idReverseDisplayName(ids));

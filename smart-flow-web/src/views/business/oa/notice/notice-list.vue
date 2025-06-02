@@ -205,7 +205,7 @@
       ellipsis: true,
     },
     {
-      title: '流程节点',
+      title: '审批节点',
       dataIndex: 'nodeName',
       width: 90,
     },

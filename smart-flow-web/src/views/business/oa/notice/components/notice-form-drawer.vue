@@ -88,7 +88,7 @@
       </a-form-item>
       <a-divider v-if="showApprovalFields"/>
       <a-form-item label="审批意见" prop="message" v-if="showApprovalFields">
-        <a-textarea v-model="formData.message"  placeholder="请输入审批意见" :auto-size="{ minRows: 3, maxRows: 8 }" />
+        <a-textarea v-model:value="formData.message"  placeholder="请输入审批意见" :auto-size="{ minRows: 3, maxRows: 8 }" />
       </a-form-item>
     </a-form>
 
@@ -260,10 +260,13 @@
       submitFlowData.businessId = formData.noticeId;
       //流程变量
       let taskVariables = {
-
+        flowCode : "notice",
+        businessId : formData.noticeId,
       };
       submitFlowData.variables = taskVariables;
       const resp = await instanceApi.startWorkFlow(submitFlowData);
+      console.log(resp);
+      message.success('提交成功');
       emits('reloadList');
       onClose();
     } finally {

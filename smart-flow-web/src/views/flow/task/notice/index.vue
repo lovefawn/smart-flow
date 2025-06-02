@@ -92,7 +92,9 @@
         @cancel="flowChart = false"
         @ok="flowChart = false"
     >
-      <img :src="imgUrl" width="100%" style="margin:0 auto"/>
+      <div style="height: 68vh" class="iframe-wrapper">
+        <iframe :src="iframeUrl" style="width: 100%; height: 100%" frameborder="0" scrolling="no" class="custom-iframe" />
+      </div>
     </a-modal>
 
     <!---------- 审批记录弹窗 ----------->
@@ -137,6 +139,7 @@ import SmartEnumSelect from "/@/components/framework/smart-enum-select/index.vue
 import flowDoneList from "/@/views/flow/components/flow-done/index.vue"
 import {defaultTimeRanges} from "/@/lib/default-time-ranges.js";
 import {PAGE_SIZE_OPTIONS} from "/@/constants/common-const.js";
+import {useUserStore} from "/@/store/modules/system/user.js";
 
 // 查询参数
 const queryForm = reactive({
@@ -157,7 +160,7 @@ const selectedIds = ref([]);
 const flowChart = ref(false);
 const flowDone = ref(false);
 const userVisible = ref(false);
-const imgUrl = ref("");
+const iframeUrl = ref("");
 const dialogTitle = ref("");
 const taskId = ref("");
 // 表单数据
@@ -233,10 +236,9 @@ const onSelectChange = selectedRowKeys => {
 
 
 // 显示流程图
-const toFlowImage = async instanceId => {
+const toFlowImage =  instanceId => {
   try {
-    const res = await definitionApi.flowImage(instanceId);
-    imgUrl.value = `data:image/gif;base64,${res.data}`;
+    iframeUrl.value =import.meta.env.VITE_APP_API_URL + '/warm-flow-ui/index.html?id='+instanceId+'&type=FlowChart&Authorization=Bearer ' + useUserStore().getToken + '&clientid=' + import.meta.env.VITE_APP_CLIENT_ID;
     flowChart.value = true;
   } catch (e) {
     message.error('获取流程图失败');

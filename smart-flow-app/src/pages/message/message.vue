@@ -1,35 +1,51 @@
 <template>
-  <view class="container">
-    <mescroll-body @init="mescrollInit" :down="{ auto: false }" @down="onDown" @up="onUp">
-      <mescroll-empty v-if="messageListData.length === 0"></mescroll-empty>
-      <view class="message" v-for="(item, index) in messageListData">
-        <view class="message-header">
-          <view class="header-left">
-            <image src="/src/static/images/message/message.png" mode=""></image>
-            <view>
-              {{ $smartEnumPlugin.getDescByValue('MESSAGE_TYPE_ENUM', item.messageType) }}
+  <view class="smart-page">
+    <!-- 标准导航栏 -->
+    <uni-nav-bar title="消息" :border="false" fixed class="bold-title" />
+
+    <!-- 主要内容区域 -->
+    <view class="container" :style="{ paddingBottom: showCustomTabbar ? '120rpx' : '0' }">
+      <mescroll-body @init="mescrollInit" :down="{ auto: false }" @down="onDown" @up="onUp">
+        <mescroll-empty v-if="messageListData.length === 0"></mescroll-empty>
+        <view class="message" v-for="(item, index) in messageListData" :key="index">
+          <view class="message-header">
+            <view class="header-left">
+              <image src="/src/static/images/message/message.png" mode=""></image>
+              <view>
+                {{ $smartEnumPlugin.getDescByValue('MESSAGE_TYPE_ENUM', item.messageType) }}
+              </view>
             </view>
+            <view class="header-time"> {{item.createTime}} </view>
           </view>
-          <view class="header-time"> {{item.createTime}} </view>
-        </view>
-        <view class="content">
-          <view class="message-title">
-            <uni-icons v-if="!item.readFlag" color="red" class="smart-margin-right10" type="info-filled" :size="14"></uni-icons>
-            {{ item.title }}
+          <view class="content">
+            <view class="message-title">
+              <uni-icons v-if="!item.readFlag" color="red" class="smart-margin-right10" type="info-filled" :size="14"></uni-icons>
+              {{ item.title }}
+            </view>
+            <view class="message-body"> {{item.content}} </view>
           </view>
-          <view class="message-body"> {{item.content}} </view>
         </view>
-      </view>
-    </mescroll-body>
+      </mescroll-body>
+    </view>
+
+    <!-- 自定义底部导航栏 -->
+    <SmartTabbar
+      v-if="showCustomTabbar"
+      ref="smartTabbar"
+      :current="currentTabIndex"
+      @change="onTabbarChange"
+    />
   </view>
 </template>
 
 <script setup>
   import { reactive, ref } from 'vue';
-  import { onPageScroll, onReachBottom } from '@dcloudio/uni-app';
+  import { onPageScroll, onReachBottom, onShow } from '@dcloudio/uni-app';
   import useMescroll from '@/uni_modules/uni-mescroll/hooks/useMescroll';
   import { smartSentry } from '@/lib/smart-sentry';
   import { messageApi } from '@/api/support/message-api';
+  import SmartTabbar from '@/components/smart-tabbar/smart-tabbar.vue';
+  import { useTabbarManager } from '@/utils/tabbar-manager.js';
 
   // --------------------------- 查询 ---------------------------------
 
@@ -100,9 +116,54 @@
   function onUp(mescroll) {
     query(mescroll, false, buildQueryParam(mescroll.num));
   }
+
+  // 使用统一的底部导航栏管理
+  const {
+    currentTabIndex,
+    showCustomTabbar,
+    onTabbarChange,
+    onPageShow
+  } = useTabbarManager(2, ref) // 消息页面是索引 2
+
+  onShow(() => {
+    // 调用统一的页面显示处理
+    onPageShow();
+  });
 </script>
 
 <style lang="scss" scoped>
+  // 导航栏标题加粗和调整字号
+  :deep(.bold-title) {
+    .uni-navbar__header-container {
+      .uni-navbar__header-container-inner {
+        font-weight: 600 !important;
+        font-size: 34rpx !important;
+      }
+    }
+
+    .uni-navbar__header-btns {
+      font-weight: 600 !important;
+      font-size: 34rpx !important;
+    }
+
+    .uni-navbar__content {
+      font-weight: 600 !important;
+      font-size: 34rpx !important;
+    }
+
+    // 更通用的选择器
+    .uni-navbar__title {
+      font-weight: 600 !important;
+      font-size: 34rpx !important;
+    }
+
+    // 针对可能的文本元素
+    text, .text {
+      font-weight: 600 !important;
+      font-size: 34rpx !important;
+    }
+  }
+
   .message {
     width: 700rpx;
     background: #ffffff;

@@ -1,4 +1,4 @@
-import {postRequest, getRequest} from "/@/lib/axios.js";
+import {postRequest, getRequest} from "@/lib/smart-request.js";
 
 export const instanceApi = {
     /**
@@ -76,7 +76,13 @@ completeTask :(data) => {
      * 通过ID查询任务详情  @author  lovefawn
      */
     getTaskById: (taskId) => {
-        return getRequest(`/flow/execute/getTaskById/${taskId}`);
+        return getRequest(`/flow/execute/getTaskDetail/${taskId}`);
+    },
+     /**
+     * 通过ID查询已办任务详情  @author  lovefawn
+     */
+    getDoneTaskById: (taskId) => {
+        return getRequest(`/flow/execute/getDoneTaskDetail/${taskId}`);
     },
 
     /**

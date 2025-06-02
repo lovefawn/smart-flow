@@ -1,75 +1,102 @@
 <template>
-  <view class="container">
-    <view class="top-view">
-      <view class="login"> 登录 </view>
-      <view class="logo">
-        <image src="@/static/images/login/login-logo.png" />
-      </view>
-    </view>
-    <view class="bottom-view">
-      <view class="input-view smart-margin-top10">
-        <image src="@/static/images/login/login-username.png"></image>
-        <uni-easyinput
-          class="input"
-          placeholder="请输入用户名"
-          :clearable="true"
-          placeholderStyle="color:#CCCCCC"
-          border="none"
-          v-model="loginForm.loginName"
-        />
+  <view class="smart-page">
+    <view class="smart-container smart-container--padded">
+      <!-- Logo 区域 -->
+      <view class="login-header">
+        <view class="logo-wrapper">
+          <image src="@/static/images/login/login-logo.png" class="logo-image" mode="aspectFit"></image>
+        </view>
+        <text class="app-title">SmartFlow</text>
+        <text class="app-subtitle">智能流程管理系统</text>
       </view>
 
-      <view class="input-view smart-margin-top10" v-if="emailCodeShowFlag">
-        <image src="@/static/images/login/login-password.png"></image>
-        <uni-easyinput
-          class="input"
-          placeholder="请输入邮箱验证码"
-          :clearable="true"
-          placeholderStyle="color:#CCCCCC"
-          border="none"
-          v-model="loginForm.emailCode"
-        />
-        <button @click="sendSmsCode" class="code-btn" :disabled="emailCodeButtonDisabled">
+      <!-- 登录表单 -->
+      <view class="login-form-card">
+        <!-- 用户名输入 -->
+        <view class="smart-input smart-mb--md">
+          <view class="input-wrapper">
+            <image src="@/static/images/login/login-username.png" class="input-icon"></image>
+            <uni-easyinput
+              class="input-field"
+              placeholder="请输入用户名"
+              :clearable="true"
+              placeholderStyle="color:#CCCCCC"
+              border="none"
+              v-model="loginForm.loginName"
+            />
+          </view>
+        </view>
+
+        <!-- 邮箱验证码输入 -->
+        <view v-if="emailCodeShowFlag" class="smart-input smart-mb--md">
+          <view class="input-wrapper">
+            <image src="@/static/images/login/login-password.png" class="input-icon"></image>
+            <uni-easyinput
+              class="input-field"
+              placeholder="请输入邮箱验证码"
+              :clearable="true"
+              placeholderStyle="color:#CCCCCC"
+              border="none"
+              v-model="loginForm.emailCode"
+            />
+            <button @click="sendSmsCode" class="smart-btn smart-btn--primary smart-btn--small code-btn" :disabled="emailCodeButtonDisabled">
               {{ emailCodeTips }}
+            </button>
+          </view>
+        </view>
+
+        <!-- 密码输入 -->
+        <view class="smart-input smart-mb--md">
+          <view class="input-wrapper">
+            <image src="@/static/images/login/login-password.png" class="input-icon"></image>
+            <uni-easyinput
+              class="input-field"
+              placeholder="请输入密码"
+              :clearable="true"
+              :password="true"
+              placeholderStyle="color:#CCCCCC"
+              border="none"
+              v-model="loginForm.password"
+            />
+          </view>
+        </view>
+
+        <!-- 验证码输入 -->
+        <view class="smart-input smart-mb--md">
+          <view class="input-wrapper">
+            <image src="@/static/images/login/login-password.png" class="input-icon"></image>
+            <uni-easyinput
+              class="input-field captcha-input"
+              placeholder="请输入验证码"
+              :clearable="true"
+              :password="false"
+              placeholderStyle="color:#CCCCCC"
+              border="none"
+              v-model="loginForm.captchaCode"
+            />
+            <image class="captcha-img" :src="captchaBase64Image" @click="getCaptcha" mode="aspectFit" />
+          </view>
+        </view>
+
+        <!-- 辅助链接 -->
+        <view class="login-links smart-flex smart-justify--between smart-align--center smart-mb--lg">
+          <text class="link-text">验证码登录</text>
+          <text class="link-text">忘记密码？</text>
+        </view>
+
+        <!-- 登录按钮 -->
+        <button @click="login" class="smart-btn smart-btn--primary smart-w--full smart-mb--md login-button">
+          登录
         </button>
-      </view>
 
-      <view class="input-view smart-margin-top10">
-        <image src="@/static/images/login/login-password.png"></image>
-        <uni-easyinput
-          class="input"
-          placeholder="请输入密码"
-          :clearable="true"
-          :password="true"
-          placeholderStyle="color:#CCCCCC"
-          border="none"
-          v-model="loginForm.password"
-        />
-      </view>
+        <!-- 注册按钮 -->
+        <button @click="login" class="smart-btn smart-btn--secondary smart-w--full smart-mb--lg register-button">
+          创建账号
+        </button>
 
-      <view class="input-view smart-margin-top10">
-        <image src="@/static/images/login/login-password.png"></image>
-        <uni-easyinput
-          class="input captcha-input"
-          placeholder="请输入验证码"
-          :clearable="true"
-          :password="false"
-          placeholderStyle="color:#CCCCCC"
-          border="none"
-          v-model="loginForm.captchaCode"
-        />
-        <img class="captcha-img" :src="captchaBase64Image" @click="getCaptcha" />
+        <OtherWayBox />
+        <LoginCheckBox class="login-check-box" ref="loginCheckBoxRef" />
       </view>
-
-      <view class="code-login-view smart-margin-top10">
-        <text class="code-text">验证码登录</text>
-        <text class="forget-text">忘记密码？</text>
-      </view>
-
-      <view @click="login" class="button login-btn smart-margin-top20"> 登录 </view>
-      <view @click="login" class="button register-btn smart-margin-top20"> 创建账号 </view>
-      <OtherWayBox />
-      <LoginCheckBox class="login-check-box" ref="loginCheckBoxRef" />
     </view>
   </view>
 </template>
@@ -220,147 +247,119 @@
   });
 </script>
 <style lang="scss" scoped>
-  .bottom-view {
-    box-sizing: border-box;
-    margin-top: -280rpx;
-    border-radius: 20rpx 20rpx 0 0;
-    width: 100%;
-    background-color: white;
-    padding: 0 60rpx;
-    .input-view {
+  .login-header {
+    text-align: center;
+    padding: 120rpx 0 80rpx;
+  }
+
+  .logo-wrapper {
+    margin-bottom: 40rpx;
+  }
+
+  .logo-image {
+    width: 320rpx;
+    height: 320rpx;
+  }
+
+  .app-title {
+    display: block;
+    font-size: 48rpx;
+    font-weight: 700;
+    color: #444;
+    margin-bottom: 16rpx;
+  }
+
+  .app-subtitle {
+    display: block;
+    font-size: 28rpx;
+    color: #777;
+    font-weight: 400;
+  }
+
+  .smart-input {
+    .input-wrapper {
       display: flex;
-      flex-direction: row;
       align-items: center;
-      background-color: $page-bg-color;
-      border-radius: 4px;
-      height: 100rpx;
-      .captcha-img {
-        margin-left: 5px;
-        height: 100rpx;
-        width: 40%;
-      }
-      image {
-        margin-left: 30rpx;
+      background-color: #f7f8f9;
+      border-radius: 12rpx;
+      padding: 32rpx;
+      min-height: 100rpx;
+      box-sizing: border-box;
+
+      .input-icon {
         width: 44rpx;
         height: 44rpx;
+        margin-right: 32rpx;
+        flex-shrink: 0;
       }
-      .input {
-        margin: 0 16rpx;
-        background-color: $page-bg-color;
+
+      .input-field {
+        flex: 1;
+        background-color: transparent;
       }
+
       .captcha-input {
-        width: 50%;
+        flex: 0.6;
       }
-    }
-    .code-login-view {
-      margin: 50rpx 0 0;
-      height: 40rpx;
-      display: flex;
-      flex-direction: row;
-      align-items: center;
-      justify-content: space-between;
-      .code-text {
-        height: 40rpx;
-        font-size: $main-size;
-        font-weight: 400;
-        text-align: left;
-        color: $main-font-color;
+
+      .captcha-img {
+        width: 40%;
+        height: 80rpx;
+        margin-left: 16rpx;
+        border-radius: 8rpx;
+        cursor: pointer;
       }
-      .forget-text {
-        height: 40rpx;
-        font-size: $main-size;
-        font-weight: 400;
-        text-align: right;
-        color: $second-font-color;
+
+      .code-btn {
+        margin-left: 16rpx;
+        padding: 16rpx 32rpx;
+        min-width: 160rpx;
       }
     }
   }
-  .button {
-    flex-shrink: 0;
-    width: 100%;
+
+  .login-links {
+    .link-text {
+      font-size: 28rpx;
+      color: #777;
+      cursor: pointer;
+      transition: color 0.2s ease;
+
+      &:active {
+        color: #007aff;
+      }
+    }
+  }
+
+  .login-button,
+  .register-button {
     height: 90rpx;
-    border-radius: 4px;
-    box-shadow: 0px 5px 8px 0px rgba(58, 121, 255, 0.2);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: $main-size;
-
-    &.disabled {
-      opacity: 0.4;
-    }
-    &.login-btn {
-      background: $main-color;
-      color: #ffffff;
-    }
-
-    &.register-btn {
-      background: white;
-      color: $main-color;
-      border: 0.5px solid $main-color;
-      border-color: rgba(26, 154, 255, 0.3);
-    }
+    font-size: 32rpx;
+    font-weight: 500;
+    border-radius: 12rpx;
+    box-shadow: 0 2rpx 16rpx rgba(0, 0, 0, 0.08);
   }
 
-  .logo {
-    flex-shrink: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: row;
-    height: 220rpx;
-
-    image {
-      width: 208rpx;
-      height: 220rpx;
-    }
-  }
-
-  ::v-deep .uni-easyinput__content {
+  // 深度选择器样式
+  :deep(.uni-easyinput__content) {
     background-color: transparent !important;
   }
-  ::v-deep .is-input-border {
+
+  :deep(.is-input-border) {
     border: none;
   }
-  .container {
-    display: flex;
-    align-items: center;
-    flex-direction: column;
-    min-height: 100vh;
-    width: 100vw;
-    .back-icon {
-      width: 18px;
-      height: 18px;
-    }
-    .top-view {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      width: 100%;
-      height: 720rpx;
-      background-image: url('~@/static/images/login/login-top-back.png');
-      .login {
-        font-weight: bold;
-        margin-top: 70rpx;
-      }
-      .logo {
-        width: 260rpx;
-        height: 260rpx;
-      }
-    }
+
+  .login-form-card {
+    width: 700rpx;
+    margin: 30rpx auto 0;
+    background: #ffffff;
+    border-radius: 12rpx;
+    box-shadow: 0px 3px 4px 0px rgba(24, 144, 255, 0.06);
+    padding: 40rpx;
+    box-sizing: border-box;
   }
 
   .login-check-box {
-    flex-shrink: 0;
-    margin-top: 150rpx;
-    margin-bottom: 120rpx;
-    align-self: flex-start;
-  }
-  .code-btn{
-    width: 240rpx;
-    font-size: 24rpx;
-    margin-right: 20rpx;
-    background-color: $main-color;
-    color: #fff;
+    margin-top: 48rpx;
   }
 </style>

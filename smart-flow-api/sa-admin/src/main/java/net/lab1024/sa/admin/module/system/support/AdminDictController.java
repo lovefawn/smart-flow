@@ -101,6 +101,12 @@ public class AdminDictController extends SupportBaseController {
         return ResponseDTO.ok(dictService.queryDictData(dictId));
     }
 
+    @GetMapping("/dict/value/list/{dictCode}")
+    @SaCheckPermission("support:dictData:query")
+    public ResponseDTO<List<DictDataVO>> queryDictData(@PathVariable String dictCode) {
+        return ResponseDTO.ok(dictService.queryDictDataByCode(dictCode));
+    }
+
     @Operation(summary = "字典数据 启用/禁用 @author 1024创新实验室-主任-卓大")
     @GetMapping("/dict/dictData/updateDisabled/{dictDataId}")
     @SaCheckPermission("support:dictData:updateDisabled")

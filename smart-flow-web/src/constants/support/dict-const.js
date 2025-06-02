@@ -14,6 +14,7 @@ export const DICT_SPLIT = ',';
 
 export const DICT_CODE_ENUM = {
   GOODS_PLACE: 'GOODS_PLACE',
+  LEAVE_TYPE: 'LEAVE_TYPE',
 };
 
 export default {

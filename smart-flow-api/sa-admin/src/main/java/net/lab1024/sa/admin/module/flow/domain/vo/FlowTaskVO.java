@@ -1,6 +1,9 @@
 package net.lab1024.sa.admin.module.flow.domain.vo;
 
+import cn.hutool.json.JSONObject;
 import org.dromara.warm.flow.orm.entity.FlowTask;
+
+import java.util.Map;
 
 /**
  * 待办任务vo
@@ -8,6 +11,11 @@ import org.dromara.warm.flow.orm.entity.FlowTask;
  * @author warm
  */
 public class FlowTaskVO extends FlowTask {
+
+    /**
+     * 计划审批人
+     */
+    private String initiator;
 
     /**
      * 计划审批人
@@ -23,11 +31,20 @@ public class FlowTaskVO extends FlowTask {
      * 委派人
      */
     private String delegate;
+    /**
+     * 流程编码
+     */
+    private String flowCode;
 
     /**
      * 流程状态
      */
     private String flowStatus;
+
+    private JSONObject businessFormMetaData;
+
+
+    private Map<String,Object> businessForm;
 
     /**
      * 激活状态
@@ -77,5 +94,37 @@ public class FlowTaskVO extends FlowTask {
     public FlowTaskVO setActivityStatus(Integer activityStatus) {
         this.activityStatus = activityStatus;
         return this;
+    }
+
+    public String getFlowCode() {
+        return flowCode;
+    }
+
+    public void setFlowCode(String flowCode) {
+        this.flowCode = flowCode;
+    }
+
+    public JSONObject getBusinessFormMetaData() {
+        return businessFormMetaData;
+    }
+
+    public void setBusinessFormMetaData(JSONObject businessFormMetaData) {
+        this.businessFormMetaData = businessFormMetaData;
+    }
+
+    public Map<String, Object> getBusinessForm() {
+        return businessForm;
+    }
+
+    public void setBusinessForm(Map<String, Object> businessForm) {
+        this.businessForm = businessForm;
+    }
+
+    public String getInitiator() {
+        return initiator;
+    }
+
+    public void setInitiator(String initiator) {
+        this.initiator = initiator;
     }
 }

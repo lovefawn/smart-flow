@@ -109,7 +109,7 @@
             t.target_node_name,
             t.definition_id,
             t.instance_id,
-            i.flow_status,
+            t.flow_status,
             t.message,
             t.ext,
             t.create_time,

@@ -1,11 +1,38 @@
 <template>
-  <view class="container">
-    <uni-card title="通知公告" :isFull="true" type="line" padding="0px" spacing="0px">
-      <template #extra> <view @click="onMore">查看更多</view> </template>
-      <uni-list>
-        <uni-list-item :ellipsis="1" v-for="item in data" :rightText="item.publishDate" clickable @click="goto(item.noticeId)" :title="item.title" />
-      </uni-list>
-    </uni-card>
+  <view class="smart-card notice-container">
+    <!-- 标题栏 -->
+    <view class="notice-header smart-flex smart-justify--between smart-align--center smart-mb--md">
+      <text class="notice-title">通知公告</text>
+      <text class="notice-more" @click="onMore">更多</text>
+    </view>
+
+    <!-- 通知列表 -->
+    <view class="notice-list">
+      <view
+        v-for="item in data"
+        :key="item.noticeId"
+        class="smart-list-item smart-list-item--clickable"
+        @click="goto(item.noticeId)"
+      >
+        <view class="smart-list-item__content">
+          <text class="smart-list-item__title smart-truncate">{{ item.title }}</text>
+          <text class="smart-list-item__subtitle">{{ item.publishDate }}</text>
+        </view>
+        <view class="smart-list-item__action">
+          <text class="arrow-icon">></text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 空状态 -->
+    <view v-if="!loading && data.length === 0" class="notice-empty smart-text--center smart-py--xl">
+      <text class="empty-text">暂无通知公告</text>
+    </view>
+
+    <!-- 加载状态 -->
+    <view v-if="loading" class="notice-loading smart-text--center smart-py--xl">
+      <text class="loading-text">加载中...</text>
+    </view>
   </view>
 </template>
 
@@ -55,42 +82,66 @@
 </script>
 
 <style lang="scss" scoped>
-  .container {
+  .notice-container {
     width: 700rpx;
-    margin: 0 auto 20rpx;
+    margin: 30rpx auto 0;
+    background: #ffffff;
     border-radius: 12rpx;
-    padding: 0;
-    overflow: hidden;
+    box-shadow: 0px 3px 4px 0px rgba(24, 144, 255, 0.06);
+    padding: 26rpx 30rpx 20rpx;
+    box-sizing: border-box;
+  }
 
-    :deep(.uni-card__header-box) {
-      font-weight: bold;
+  .notice-header {
+    padding-bottom: 32rpx;
+    border-bottom: 1rpx solid #ededed;
+  }
+
+  .notice-title {
+    font-size: 32rpx;
+    font-weight: 600;
+    color: #444;
+  }
+
+  .notice-more {
+    font-size: 28rpx;
+    color: #007aff;
+    font-weight: 500;
+    cursor: pointer;
+    transition: color 0.2s ease;
+
+    &:active {
+      color: #0056cc;
     }
-    :deep(.uni-list--border-bottom) {
-      background-color: transparent;
+  }
+
+  .notice-list {
+    .smart-list-item {
+      border-bottom: 1rpx solid #ededed;
+      padding: 32rpx 0;
+
+      &:last-child {
+        border-bottom: none;
+      }
+
+      &:active {
+        background-color: #fafafa;
+      }
     }
-    :deep(.uni-card__content) {
-      padding: 0 !important;
-    }
-    :deep(.uni-card__header) {
-      border: none;
-    }
-    :deep(.uni-card .uni-card__header .uni-card__header-content .uni-card__header-content-title) {
-      font-size: 32rpx;
-    }
-    :deep(.uni-list-item__container) {
-      padding: 16rpx 20rpx;
-    }
-    :deep(.uni-card__header) {
-      background: linear-gradient(180deg, #e8f4ff, #f8fcff);
-    }
-    :deep(.uni-card__header-extra) {
-      font-size: 30rpx;
-      font-weight: 400;
-      text-align: center;
-      color: #1a9aff;
-    }
-    :deep(.uni-list-item__content-title) {
-      font-size: 30rpx;
+  }
+
+  .arrow-icon {
+    font-size: 28rpx;
+    color: #999;
+    font-weight: bold;
+  }
+
+  .notice-empty,
+  .notice-loading {
+    .empty-text,
+    .loading-text {
+      font-size: 28rpx;
+      color: #999;
     }
   }
 </style>

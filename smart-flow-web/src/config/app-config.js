@@ -37,7 +37,7 @@ export const appDefaultConfig = {
   // 帮助文档
   helpDocFlag: true,
   // 帮助文档默认展开
-  helpDocExpandFlag: true,
+  helpDocExpandFlag: false,
   // 水印
   watermarkFlag: true,
   // 网站名称

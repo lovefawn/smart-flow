@@ -89,13 +89,13 @@
         </template>
         <template v-if="column.dataIndex === 'action'">
           <div class="smart-table-operate">
-            <a-button
+            <a-button v-if="!record.isPublish"
                 type="link"
                 @click="handleDesign(record.id, record.isPublish)"
             >流程设计</a-button>
-            <a-button
+            <a-button v-if="record.isPublish"
                 type="link"
-                @click="toFlowImage(record.id)"
+                @click="handleDesign(record.id, record.isPublish)"
             >流程图</a-button>
             <a-button
                 type="link"
@@ -199,7 +199,9 @@
            width="70%"
            @cancel="onClose"
            @ok="onClose">
-    <img :src="imgUrl" width="100%" style="margin:0 auto"/>
+    <div style="height: 68vh" class="iframe-wrapper">
+      <iframe :src="iframeUrl" style="width: 100%; height: 100%" frameborder="0" scrolling="no" class="custom-iframe" />
+    </div>
   </a-modal>
 </template>
 <script setup>
@@ -214,6 +216,8 @@
   import _ from 'lodash';
   import { TABLE_ID_CONST } from '/@/constants/support/table-id-const';
   import {useRouter} from "vue-router";
+  import {useUserStore} from "/@/store/modules/system/user.js";
+
   // ---------------------------- 表格列 ----------------------------
 
   const columns = ref([
@@ -569,13 +573,16 @@
       SmartLoading.hide();
     }
   }
-  const imgUrl = ref("");
+  const iframeUrl = ref("");
   const flowChart = ref(false);
-  function toFlowImage(id) {
-    definitionApi.chartDef(id).then(response => {
-      flowChart.value = true
-      imgUrl.value = "data:image/gif;base64," + response.data;
-    });
+  // 显示流程图
+  function toFlowImage(instanceId) {
+    try {
+      iframeUrl.value =import.meta.env.VITE_APP_API_URL + '/warm-flow-ui/index.html?id='+instanceId+'&type=FlowChart&Authorization=Bearer ' + useUserStore().getToken + '&clientid=' + import.meta.env.VITE_APP_CLIENT_ID;
+      flowChart.value = true;
+    } catch (e) {
+      message.error('获取流程图失败');
+    }
   }
   function onClose() {
     flowChart.value = false;

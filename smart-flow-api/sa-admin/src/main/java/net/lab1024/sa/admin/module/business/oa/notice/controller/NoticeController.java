@@ -95,6 +95,7 @@ public class NoticeController {
     @RepeatSubmit
     @SaCheckPermission("oa:notice:update")
     public ResponseDTO<String> update(@RequestBody @Valid NoticeUpdateForm updateForm) {
+
         return noticeService.update(updateForm);
     }
 

@@ -272,4 +272,7 @@ public class DictService {
         return ResponseDTO.ok();
     }
 
+    public List<DictDataVO> queryDictDataByCode(String dictCode) {
+        return dictDataDao.queryDictDataByCode(dictCode);
+    }
 }

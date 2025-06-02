@@ -26,12 +26,16 @@ export const useDictStore = defineStore({
       if (!dataValue) {
         return '';
       }
+      
+      // 强制转换dataValue为字符串类型
+      let stringValue = dataValue == null ? '' : String(dataValue);
+      
       let dict = this.getDictData(dictCode);
       if (dict.length === 0) {
         return '';
       }
 
-      let valueArray = dataValue.split(DICT_SPLIT);
+      let valueArray = stringValue.split(DICT_SPLIT);
       let result = [];
       for (let item of valueArray) {
         let target = _.find(dict, { dataValue: item });

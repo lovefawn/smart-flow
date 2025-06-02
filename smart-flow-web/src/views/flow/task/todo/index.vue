@@ -108,7 +108,9 @@
         @cancel="flowChart = false"
         @ok="flowChart = false"
     >
-      <img :src="imgUrl" width="100%" style="margin:0 auto"/>
+      <div style="height: 68vh" class="iframe-wrapper">
+        <iframe :src="iframeUrl" style="width: 100%; height: 100%" frameborder="0" scrolling="no" class="custom-iframe" />
+      </div>
     </a-modal>
 
     <!---------- 审批记录弹窗 ----------->
@@ -155,6 +157,7 @@ import SmartEnumSelect from "/@/components/framework/smart-enum-select/index.vue
 import flowDoneList from "/@/views/flow/components/flow-done/index.vue"
 import {defaultTimeRanges} from "/@/lib/default-time-ranges.js";
 import {PAGE_SIZE_OPTIONS} from "/@/constants/common-const.js";
+import {useUserStore} from "/@/store/modules/system/user.js";
 
 // 查询参数
 const queryForm = reactive({
@@ -165,6 +168,8 @@ const queryForm = reactive({
   createTime: null,
 });
 
+const insId = ref(null);
+
 // 表格数据
 const instanceList = ref([]);
 const total = ref(0);
@@ -172,10 +177,10 @@ const loading = ref(false);
 const selectedIds = ref([]);
 
 // 弹窗状态
+const iframeUrl = ref("");
 const flowChart = ref(false);
 const flowDone = ref(false);
 const userVisible = ref(false);
-const imgUrl = ref("");
 const dialogTitle = ref("");
 const taskId = ref("");
 const businessId = ref();
@@ -195,13 +200,13 @@ const columns = ref([
   { title: '序号',width: 50,customRender: ({ index }) => index + 1 },
   { title: 'ID', dataIndex: 'id' },
   { title: '流程名称', dataIndex: 'flowName', width: 140},
-  { title: '任务名称', dataIndex: 'nodeName' },
-  { title: '审批人', dataIndex: 'approver' },
+  { title: '当前节点', dataIndex: 'nodeName' },
+  { title: '当前审批人', dataIndex: 'approver' },
   { title: '转办人', dataIndex: 'transferredBy' },
   { title: '委派人', dataIndex: 'delegate' },
   { title: '流程状态', dataIndex: 'flowStatus' ,align: 'center',},
   { title: '激活状态', dataIndex: 'activityStatus' ,align: 'center',},
-  { title: '创建时间', dataIndex: 'createTime' },
+  { title: '任务开始时间', dataIndex: 'createTime' },
   { title: '操作', dataIndex: 'action', width: 240, fixed: 'right' }
 ]);
 
@@ -276,15 +281,15 @@ const handle = async (row, showAnyNode) => {
 };
 
 // 显示流程图
-const toFlowImage = async instanceId => {
+const toFlowImage =  instanceId => {
   try {
-    const res = await definitionApi.flowImage(instanceId);
-    imgUrl.value = `data:image/gif;base64,${res.data}`;
+    iframeUrl.value =import.meta.env.VITE_APP_API_URL + '/warm-flow-ui/index.html?id='+instanceId+'&type=FlowChart&Authorization=Bearer ' + useUserStore().getToken + '&clientid=' + import.meta.env.VITE_APP_CLIENT_ID;
     flowChart.value = true;
   } catch (e) {
     message.error('获取流程图失败');
   }
 };
+
 //显示审批记录
 const toFlowDoneList =  instanceIdValue=> {
   flowDone.value = true;

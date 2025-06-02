@@ -16,6 +16,11 @@ server:
   servlet:
     context-path: /
 
+management:
+  health:
+    mail:
+      enabled: false
+
 # 环境
 spring:
   profiles:

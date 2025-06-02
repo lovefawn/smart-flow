@@ -80,7 +80,7 @@
       </a-form-item>
       <a-divider v-if="showApprovalFields"/>
       <a-form-item label="审批意见" prop="message" v-if="showApprovalFields">
-        <a-textarea v-model="formData.message"  placeholder="请输入审批意见" :auto-size="{ minRows: 3, maxRows: 8 }" />
+        <a-textarea v-model:value="formData.message"  placeholder="请输入审批意见" :auto-size="{ minRows: 3, maxRows: 8 }" />
       </a-form-item>
     </a-form>
 

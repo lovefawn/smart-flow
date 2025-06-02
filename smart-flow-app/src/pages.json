@@ -24,7 +24,7 @@
 		},
 		{
 			"path" : "pages/mine/mine",
-			"style" : 
+			"style" :
 			{
 				"navigationBarTitleText" : "我的",
 				"enablePullDownRefresh" : false,
@@ -64,16 +64,16 @@
 			{
 				"navigationBarTitleText" : "通知公告",
 				"enablePullDownRefresh" : false,
-				"navigationBarBackgroundColor": "#fff"
+				"navigationStyle": "custom"
 			}
 		},
 		{
 			"path" : "pages/notice/notice-detail",
 			"style" :
 			{
-				"navigationBarTitleText" : "公告内容",
+				"navigationBarTitleText" : "公告详情",
 				"enablePullDownRefresh" : false,
-				"navigationBarBackgroundColor": "#fff"
+				"navigationStyle": "custom"
 			}
 		},
 		{
@@ -105,11 +105,11 @@
 		},
 		{
 			"path" : "pages/message/message",
-			"style" : 
+			"style" :
 			{
 				"navigationBarTitleText" : "消息",
 				"enablePullDownRefresh" : false,
-				"navigationBarBackgroundColor": "#fff"
+				"navigationStyle": "custom"
 			}
 		},
 		{
@@ -141,11 +141,47 @@
 		},
 		{
 			"path" : "pages/flow/list",
-			"style" : 
+			"style" :
 			{
 				"navigationBarTitleText" : "流程管理",
 				"enablePullDownRefresh" : false,
-				"navigationBarBackgroundColor": "#fff"
+				"navigationStyle": "custom"
+			}
+		},
+		{
+			"path" : "pages/flow/task-detail",
+			"style" :
+			{
+				"navigationBarTitleText" : "任务详情",
+				"enablePullDownRefresh" : false,
+				"navigationStyle": "custom"
+			}
+		},
+		{
+			"path" : "pages/flow/task-done-detail",
+			"style" :
+			{
+				"navigationBarTitleText" : "任务详情",
+				"enablePullDownRefresh" : false,
+				"navigationStyle": "custom"
+			}
+		},
+		{
+			"path" : "pages/flow/task-handle",
+			"style" :
+			{
+				"navigationBarTitleText" : "处理任务",
+				"enablePullDownRefresh" : false,
+				"navigationStyle": "custom"
+			}
+		},
+		{
+			"path" : "pages/flow/process-view",
+			"style" :
+			{
+				"navigationBarTitleText" : "流程图",
+				"enablePullDownRefresh" : false,
+				"navigationStyle": "custom"
 			}
 		},
 		{
@@ -174,22 +210,20 @@
 		"backgroundColor": "#F8F8F8"
 	},
 	"tabBar": {
-		"color": "#858585",
-		"selectedColor": "#1A9AFF",
-		"borderStyle": "black",
+		"color": "#777777",
+		"selectedColor": "#007aff",
+		"borderStyle": "white",
 		"backgroundColor": "#ffffff",
+		"height": "50px",
+		"fontSize": "12px",
+		"iconWidth": "24px",
+		"spacing": "3px",
 		"list": [{
 			"pagePath": "pages/home/index",
 			"iconPath": "static/images/tabbar/home-icon.png",
 			"selectedIconPath": "static/images/tabbar/home-icon-h.png",
 			"text": "首页"
 		},
-//		{
-//		  "pagePath": "pages/list/list",
-//		  "iconPath": "static/images/tabbar/list-icon.png",
-//		  "selectedIconPath": "static/images/tabbar/list-icon-h.png",
-//		  "text": "常见列表1"
-//		},
 		{
 		  "pagePath": "pages/flow/list",
 		  "iconPath": "static/images/tabbar/list-icon.png",

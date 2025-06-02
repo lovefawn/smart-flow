@@ -1,6 +1,8 @@
 package net.lab1024.sa.admin.module.flow.service.impl;
 
+import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.util.ObjectUtil;
+import cn.hutool.json.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
@@ -11,36 +13,41 @@ import net.lab1024.sa.admin.module.flow.domain.form.ApproveTaskInsForm;
 import net.lab1024.sa.admin.module.flow.domain.form.CompleteTaskForm;
 import net.lab1024.sa.admin.module.flow.domain.form.StartProcessForm;
 import net.lab1024.sa.admin.module.flow.domain.vo.FlowCopyVO;
+import net.lab1024.sa.admin.module.flow.domain.vo.FlowTaskVO;
 import net.lab1024.sa.admin.module.flow.domain.vo.StartProcessReturnVO;
 import net.lab1024.sa.admin.module.flow.enums.BusinessStatusEnum;
-import net.lab1024.sa.admin.module.flow.enums.FlowStatusEnum;
-import net.lab1024.sa.admin.module.flow.enums.TaskStatusEnum;
 import net.lab1024.sa.admin.module.flow.handler.FlowProcessEventHandler;
 import net.lab1024.sa.admin.module.flow.mapper.WarmFlowMapper;
 import net.lab1024.sa.admin.module.flow.service.FlowTaskService;
-import net.lab1024.sa.admin.module.flow.domain.vo.FlowTaskVO;
 import net.lab1024.sa.admin.module.system.employee.domain.entity.EmployeeEntity;
+import net.lab1024.sa.admin.module.system.employee.service.EmployeeService;
 import net.lab1024.sa.base.common.exception.BusinessException;
-import net.lab1024.sa.base.common.util.SmartBeanUtil;
-import net.lab1024.sa.base.common.util.SmartRequestUtil;
-import net.lab1024.sa.base.common.util.SmartStringUtil;
-import net.lab1024.sa.base.common.util.SpringUtils;
-import net.lab1024.sa.base.module.support.operatelog.OperateLogDao;
+import net.lab1024.sa.base.common.util.*;
 import org.dromara.warm.flow.core.dto.FlowParams;
-import org.dromara.warm.flow.core.entity.*;
+import org.dromara.warm.flow.core.entity.Definition;
+import org.dromara.warm.flow.core.entity.HisTask;
+import org.dromara.warm.flow.core.entity.Instance;
+import org.dromara.warm.flow.core.entity.Task;
 import org.dromara.warm.flow.core.enums.SkipType;
-import org.dromara.warm.flow.core.service.*;
-import org.dromara.warm.flow.orm.entity.*;
+import org.dromara.warm.flow.core.service.DefService;
+import org.dromara.warm.flow.core.service.InsService;
+import org.dromara.warm.flow.core.service.TaskService;
+import org.dromara.warm.flow.orm.entity.FlowHisTask;
+import org.dromara.warm.flow.orm.entity.FlowInstance;
+import org.dromara.warm.flow.orm.entity.FlowTask;
+import org.dromara.warm.flow.orm.mapper.FlowHisTaskMapper;
 import org.dromara.warm.flow.orm.mapper.FlowInstanceMapper;
 import org.dromara.warm.flow.orm.mapper.FlowTaskMapper;
-import org.springframework.context.annotation.Bean;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 
-import static net.lab1024.sa.admin.module.flow.contstant.FlowConstant.BUSINESS_ID;
-import static net.lab1024.sa.admin.module.flow.contstant.FlowConstant.INITIATOR;
+import static net.lab1024.sa.admin.module.flow.contstant.FlowConstant.*;
 
 /**
  * 流程执行SERVICEIMPL
@@ -66,6 +73,10 @@ public class FlowTaskServiceImpl implements FlowTaskService {
     private FlowTaskMapper flowTaskMapper;
     @Resource
     private FlowProcessEventHandler flowProcessEventHandler;
+    @Resource
+    private EmployeeService employeeService;
+    @Autowired
+    private FlowHisTaskMapper flowHisTaskMapper;
 
     @Override
     public IPage<FlowTaskVO> toDoPage(IPage<FlowTaskVO> page, Task task) {
@@ -112,6 +123,7 @@ public class FlowTaskServiceImpl implements FlowTaskService {
         variables.put(INITIATOR, String.valueOf(userId));
         // 业务id
         variables.put(BUSINESS_ID, businessId);
+        variables.put(BUSINESS_TABLE,startProcessForm.getFlowCode());
         FlowInstance flowInstance = flowInstanceMapper.selectOne(new LambdaQueryWrapper<>(FlowInstance.class)
                 .eq(FlowInstance::getBusinessId, businessId));
         if (ObjectUtil.isNotNull(flowInstance)) {
@@ -151,6 +163,12 @@ public class FlowTaskServiceImpl implements FlowTaskService {
         if (taskList.size() > 1) {
             throw new BusinessException("请检查流程第一个环节是否为申请人！");
         }
+        //自动提交申请人流程
+        ApproveTaskInsForm approveTaskInsForm = new ApproveTaskInsForm();
+        approveTaskInsForm.setInstanceId(instance.getId());
+        approveTaskInsForm.setVariables(variables);
+        approveTaskByInstance( approveTaskInsForm);
+        //返回执行结果
         StartProcessReturnVO vo = new StartProcessReturnVO();
         vo.setProcessInstanceId(instance.getId());
         vo.setTaskId(taskList.get(0).getId());
@@ -234,6 +252,109 @@ public class FlowTaskServiceImpl implements FlowTaskService {
     public List<FlowTask> selectByInstId(Long instanceId) {
         return flowTaskMapper.selectList(new LambdaQueryWrapper<>(FlowTask.class)
                 .eq(FlowTask::getInstanceId, instanceId));
+    }
+    /**
+     * 按照任务id查询任务详情
+     *
+     * @param taskId 流程实例id
+     */
+    @Override
+    public FlowTaskVO getTaskDetailById(Long taskId){
+        FlowTask flowTask = flowTaskMapper.selectById(taskId);
+        Definition definition = defService.getById(flowTask.getDefinitionId());
+        Instance flowInstance = insService.getById(flowTask.getInstanceId());
+        Map<String, Object>  variable = flowInstance.getVariableMap();
+        String flowCode = variable.get("flowCode").toString();
+        String initiatorId = variable.get("initiator").toString();
+        String initiator = employeeService.getById(Long.parseLong(initiatorId)).getActualName();
+
+        BaseMapper bizMapper = SpringUtils.getBean(flowCode+"Dao");
+        Map<String,Object> businessForm = new HashMap<>();
+        if (ObjectUtil.isNotNull(bizMapper)) {
+            Object businessEntity = bizMapper.selectById(flowInstance.getBusinessId());
+            if (ObjectUtil.isNotNull(businessEntity)) {
+                // 将业务实体转换为Map
+                businessForm = BeanUtil.beanToMap(businessEntity);
+            }
+        }
+        // 暂时不获取表元数据，避免复杂的依赖问题
+        JSONObject businessFormMetaData = new JSONObject();
+         try {
+             String tableName = getTableNameByFlowCode(flowCode);
+             if (tableName != null) {
+                 businessFormMetaData = SmartTableMetadataUtil.getTableMetadata(tableName);
+             }
+         } catch (Exception e) {
+             System.err.println("获取表元数据失败: " + e.getMessage());
+         }
+
+        FlowTaskVO flowTaskVO = new FlowTaskVO();
+         SmartBeanUtil.copyProperties(flowTask,flowTaskVO);
+         flowTaskVO.setFlowCode(definition.getFlowCode());
+         flowTaskVO.setFlowName(definition.getFlowName());
+         flowTaskVO.setBusinessId(flowInstance.getBusinessId());
+         flowTaskVO.setInitiator(initiator);
+         flowTaskVO.setBusinessFormMetaData(businessFormMetaData);
+         flowTaskVO.setBusinessForm( businessForm);
+
+          return flowTaskVO;
+    }
+
+    /**
+     * 按照任务id查询任务详情
+     *
+     * @param taskId 流程实例id
+     */
+    @Override
+    public FlowTaskVO getDoneTaskDetailById(Long taskId){
+        FlowHisTask flowHisTask = flowHisTaskMapper.selectById(taskId);
+        Definition definition = defService.getById(flowHisTask.getDefinitionId());
+        Instance flowInstance = insService.getById(flowHisTask.getInstanceId());
+        Map<String, Object>  variable = flowInstance.getVariableMap();
+        String flowCode = variable.get("flowCode").toString();
+        String initiatorId = variable.get("initiator").toString();
+        String initiator = employeeService.getById(Long.parseLong(initiatorId)).getActualName();
+
+        BaseMapper bizMapper = SpringUtils.getBean(flowCode+"Dao");
+        Map<String,Object> businessForm = new HashMap<>();
+        if (ObjectUtil.isNotNull(bizMapper)) {
+            Object businessEntity = bizMapper.selectById(flowInstance.getBusinessId());
+            if (ObjectUtil.isNotNull(businessEntity)) {
+                // 将业务实体转换为Map
+                businessForm = BeanUtil.beanToMap(businessEntity);
+            }
+        }
+        // 暂时不获取表元数据，避免复杂的依赖问题
+        JSONObject businessFormMetaData = new JSONObject();
+        try {
+            String tableName = getTableNameByFlowCode(flowCode);
+            if (tableName != null) {
+                businessFormMetaData = SmartTableMetadataUtil.getTableMetadata(tableName);
+            }
+        } catch (Exception e) {
+            System.err.println("获取表元数据失败: " + e.getMessage());
+        }
+
+        FlowTaskVO flowTaskVO = new FlowTaskVO();
+        SmartBeanUtil.copyProperties(flowHisTask,flowTaskVO);
+        flowTaskVO.setFlowName(definition.getFlowName());
+        flowTaskVO.setBusinessId(flowInstance.getBusinessId());
+        flowTaskVO.setInitiator(initiator);
+        flowTaskVO.setBusinessFormMetaData(businessFormMetaData);
+        flowTaskVO.setBusinessForm( businessForm);
+
+        return flowTaskVO;
+    }
+
+
+    /**
+     * 根据flowCode映射到对应的表名
+     * @param flowCode 流程代码
+     * @return 表名
+     */
+    private String getTableNameByFlowCode(String flowCode) {
+        return "t_"+flowCode;
+
     }
 
 }

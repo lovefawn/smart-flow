@@ -90,8 +90,9 @@ public class HandlerSelectServiceImpl implements HandlerSelectService {
         queryForm.setStartTime(SmartLocalDateUtil.parseDate(query.getBeginTime(), SmartDateFormatterEnum.YMD));
         if(SmartStringUtil.isNotEmpty(query.getEndTime()))
         queryForm.setEndTime(SmartLocalDateUtil.parseDate(query.getEndTime(), SmartDateFormatterEnum.YMD));
-        queryForm.setPageNum((long)query.getPageNum());
-        queryForm.setPageSize((long)query.getPageSize());
+        // 处理分页参数，避免空指针异常
+        queryForm.setPageNum(query.getPageNum() != null ? (long)query.getPageNum() : 1L);
+        queryForm.setPageSize(query.getPageSize() != null ? (long)query.getPageSize() : 10L);
         // 查询角色列表
         PageResult<RoleVO> pageResult = roleService.queryPage(queryForm);
 
@@ -119,8 +120,9 @@ public class HandlerSelectServiceImpl implements HandlerSelectService {
         queryForm.setStartTime(SmartLocalDateUtil.parseDate(query.getBeginTime(), SmartDateFormatterEnum.YMD));
         if(SmartStringUtil.isNotEmpty(query.getEndTime()))
         queryForm.setEndTime(SmartLocalDateUtil.parseDate(query.getEndTime(), SmartDateFormatterEnum.YMD));
-        queryForm.setPageNum((long)query.getPageNum());
-        queryForm.setPageSize((long)query.getPageSize());
+        // 处理分页参数，避免空指针异常
+        queryForm.setPageNum(query.getPageNum() != null ? (long)query.getPageNum() : 1L);
+        queryForm.setPageSize(query.getPageSize() != null ? (long)query.getPageSize() : 10L);
         // 查询部门列表
         PageResult<DepartmentVO> deptPage = departmentService.queryPage(queryForm);
         // 业务系统数据，转成组件内部能够显示的数据, total是业务数据总数，用于分页显示
@@ -153,8 +155,9 @@ public class HandlerSelectServiceImpl implements HandlerSelectService {
         employeeQueryForm.setStartTime(SmartLocalDateUtil.parseDate(query.getBeginTime(), SmartDateFormatterEnum.YMD));
         if(SmartStringUtil.isNotEmpty(query.getEndTime()))
         employeeQueryForm.setEndTime(SmartLocalDateUtil.parseDate(query.getEndTime(), SmartDateFormatterEnum.YMD));
-        employeeQueryForm.setPageNum((long)query.getPageNum());
-        employeeQueryForm.setPageSize((long)query.getPageSize());
+        // 处理分页参数，避免空指针异常
+        employeeQueryForm.setPageNum(query.getPageNum() != null ? (long)query.getPageNum() : 1L);
+        employeeQueryForm.setPageSize(query.getPageSize() != null ? (long)query.getPageSize() : 10L);
         // 查询用户列表
         PageResult<EmployeeVO>  employeeVOPageResult = employeeService.queryEmployeePage(employeeQueryForm);
 

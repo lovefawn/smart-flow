@@ -10,6 +10,15 @@
         order by sort_order desc
     </select>
 
+    <select id="queryDictDataByCode" resultType="net.lab1024.sa.base.module.support.dict.domain.vo.DictDataVO">
+        select *
+        from t_dict_data tdd
+            left join t_dict td
+        on tdd.dict_id = td.dict_id
+        where td.dict_code = #{dictCode} and tdd.disabled_flag = false
+        order by tdd.sort_order desc
+    </select>
+
     <select id="getAll" resultType="net.lab1024.sa.base.module.support.dict.domain.vo.DictDataVO">
         select t_dict_data.*,
                t_dict.dict_code

@@ -83,10 +83,5 @@ export const definitionApi = {
   // 导出流程定义
   export: (record) => {
     return postDownload('/flow/definition/exportDefinition/' + record.id, record.flowCode + '_' + record.version + '.json');
-  },
-
-  // 查看流程图
-  flowImage:(instanceId) => {
-    return getRequest('/flow/definition/flowChart/' + instanceId)
-  },
+  }
 };

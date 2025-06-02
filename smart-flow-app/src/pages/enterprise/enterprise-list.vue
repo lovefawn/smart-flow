@@ -1,9 +1,9 @@
 <template>
-  <view class="container">
+  <view class="smart-page enterprise-list-page">
     <mescroll-body @init="mescrollInit" :down="{ auto: false }" @down="onDown" @up="onUp" :up="{ toTop: { src: '' } }">
-      <!--搜索框-->
+      <!-- 搜索栏 -->
       <uni-nav-bar :border="false" fixed :leftWidth="0" rightWidth="70px">
-        <view class="input">
+        <view class="search-input">
           <uni-easyinput
             prefixIcon="search"
             :clearable="true"
@@ -15,40 +15,53 @@
           />
         </view>
         <template #right>
-          <view class="nav-right" @click="search">
+          <view class="search-button smart-flex smart-align--center" @click="search">
             <uni-icons type="search" size="30"></uni-icons>
-            <view class="nav-right-name"> 搜索 </view>
+            <text class="search-text smart-ml--xs">搜索</text>
           </view>
         </template>
       </uni-nav-bar>
 
-      <!-- 列表 -->
-      <view class="list-container">
-        <view class="list-item" @click="gotoDetail(item.enterpriseId)" v-for="item in listData" :key="item.enterpriseId">
-          <view class="list-item-row">
-            <view class="list-item-label">公司：</view>
-            <view class="list-item-content bolder">{{ item.enterpriseName }}</view>
-            <view class="list-item-phone" @click="callPhone(item.contactPhone)">
-              <uni-icons type="phone" size="18" color="#007aff"></uni-icons>
-              联系
+      <!-- 企业列表 -->
+      <view class="smart-container smart-pt--md">
+        <view
+          v-for="item in listData"
+          :key="item.enterpriseId"
+          class="smart-card enterprise-item smart-mb--md"
+          @click="gotoDetail(item.enterpriseId)"
+        >
+          <!-- 企业名称行 -->
+          <view class="smart-flex smart-justify--between smart-align--center smart-mb--sm">
+            <view class="smart-flex smart-align--center smart-flex-item--1">
+              <text class="item-label">公司：</text>
+              <text class="smart-title--h5 smart-truncate">{{ item.enterpriseName }}</text>
+            </view>
+            <view class="contact-button smart-flex smart-align--center" @click.stop="callPhone(item.contactPhone)">
+              <uni-icons type="phone" size="18" color="#1A9AFF"></uni-icons>
+              <text class="contact-text smart-ml--xs">联系</text>
             </view>
           </view>
-          <view class="list-item-row">
-            <view class="list-item-label">营业执照：</view>
-            <view class="list-item-content">{{ item.unifiedSocialCreditCode }}</view>
-          </view>
-          <view class="list-item-row">
-            <view class="list-item-label">联系人：</view>
-            <view class="list-item-content">{{ item.contact }}</view>
-          </view>
-          <view class="list-item-row">
-            <view class="list-item-label">电话：</view>
-            <view class="list-item-content">{{ item.contactPhone }}</view>
+
+          <!-- 企业信息 -->
+          <view class="enterprise-info">
+            <view class="info-row smart-flex smart-mb--xs">
+              <text class="item-label">营业执照：</text>
+              <text class="smart-body--small smart-color--secondary smart-truncate">{{ item.unifiedSocialCreditCode }}</text>
+            </view>
+            <view class="info-row smart-flex smart-mb--xs">
+              <text class="item-label">联系人：</text>
+              <text class="smart-body--small smart-color--secondary">{{ item.contact }}</text>
+            </view>
+            <view class="info-row smart-flex">
+              <text class="item-label">电话：</text>
+              <text class="smart-body--small smart-color--secondary">{{ item.contactPhone }}</text>
+            </view>
           </view>
         </view>
       </view>
     </mescroll-body>
 
+    <!-- 添加按钮 -->
     <uni-fab ref="fab" :pattern="fabPattern" horizontal="right" @fabClick="gotoAdd" />
   </view>
 </template>
@@ -150,68 +163,82 @@
 </script>
 
 <style lang="scss" scoped>
-  .container {
-    background-color: #f4f4f4;
+  .enterprise-list-page {
+    background-color: $page-bg-color;
   }
-  .input {
+
+  .search-input {
     width: 100%;
     height: 60rpx;
-    background: #f7f8f9;
-    border-radius: 4px;
+    background: $background-color;
+    border-radius: 12rpx;
     margin: 8rpx 0;
     display: flex;
     align-items: center;
   }
 
-  .nav-right {
+  .search-button {
     width: 140rpx;
-    display: flex;
     height: 88rpx;
-    flex-direction: row;
-    line-height: 88rpx;
-    .nav-right-name {
-      margin-left: 5px;
-      line-height: 88rpx;
-      font-size: 30rpx;
+    cursor: pointer;
+    transition: opacity 0.2s ease;
+
+    &:active {
+      opacity: 0.7;
+    }
+
+    .search-text {
+      font-size: $small-size;
+      color: $main-font-color;
     }
   }
 
-  .list-container {
-    padding: 10rpx 20rpx;
-    margin-top: 10rpx;
+  .enterprise-item {
+    cursor: pointer;
+    transition: all 0.2s ease;
 
-    .list-item {
-      background: #ffffff;
-      box-shadow: 0px 3px 4px 0px rgba(24, 144, 255, 0.06);
-      margin-bottom: 20rpx;
-      padding: 30rpx 40rpx;
+    &:active {
+      transform: scale(0.98);
+      box-shadow: 0 4rpx 24rpx rgba(0, 0, 0, 0.12);
+    }
+  }
 
-      .list-item-row {
-        display: flex;
-        flex-direction: row;
-        margin-bottom: 16rpx;
-        justify-content: flex-start;
+  .item-label {
+    font-size: $small-size;
+    color: $auxiliary-color;
+    min-width: 120rpx;
+    flex-shrink: 0;
+  }
 
-        .list-item-label {
-          font-size: 28rpx;
-          font-weight: 400;
-          text-align: left;
-          color: #999999;
-        }
-        .bolder {
-          font-weight: 600 !important;
-        }
-        .list-item-content {
-          font-size: 30rpx;
-          font-weight: 500;
-          text-align: left;
-          color: #323333;
-        }
-        .list-item-phone {
-          color: $uni-color-primary;
-          margin-left: auto;
-        }
-      }
+  .contact-button {
+    padding: 8rpx 16rpx;
+    background-color: #e3f2fd;
+    border-radius: 8rpx;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+
+    &:active {
+      background-color: #bbdefb;
+    }
+
+    .contact-text {
+      font-size: $small-size;
+      color: $main-color;
+      font-weight: 500;
+    }
+  }
+
+  .enterprise-info {
+    .info-row {
+      align-items: flex-start;
+    }
+  }
+
+  // FAB 按钮样式调整
+  :deep(.uni-fab) {
+    .uni-fab__content {
+      background-color: $main-color !important;
+      box-shadow: 0 8rpx 32rpx rgba(0, 0, 0, 0.16) !important;
     }
   }
 </style>

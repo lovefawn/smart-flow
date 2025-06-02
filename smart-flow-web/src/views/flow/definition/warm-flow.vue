@@ -10,7 +10,7 @@ import {useUserStore} from "/@/store/modules/system/user.js";
 const { proxy } = getCurrentInstance();
 import {getCurrentInstance, onMounted, onUnmounted, ref} from 'vue';
 
-const iframeUrl = ref(import.meta.env.VITE_APP_API_URL + `/warm-flow-ui/index.html?id=${proxy.$route.params.id}&disabled=${proxy.$route.query.disabled}&Authorization=Bearer ` + + useUserStore().getToken);
+const iframeUrl = ref(import.meta.env.VITE_APP_API_URL + `/warm-flow-ui/index.html?id=${proxy.$route.params.id}&disabled=${proxy.$route.query.disabled}&Authorization=Bearer ` + useUserStore().getToken);
 
 onMounted(() => {
   window.addEventListener("message", handleMessage);

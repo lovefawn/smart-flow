@@ -77,39 +77,134 @@ $uni-font-size-paragraph: 15px;
 
 
 
-// 字体 -------------------  begin -------------
-$main-size: 14px; // 主要字体大小
-$title-size: 17px;// 标题字体大小
-$small-size: 12px; // 辅助字体大小
-// 字体 -------------------  end -------------
+// ==================== 设计系统 Design System ====================
 
-// 颜色 -------------------  begin -------------
-$main-color: #1A9AFF; //主色调
-$main-background: #F4F4F4; //主色背景色
-$main-font-color: #444444;// 字体一级颜色
-$second-font-color: #777777; // 字体二级颜色
-$border-color: #EDEDED; // 边框颜色
-$background-color: #F5F6F8; // 背景颜色
-$page-bg-color: #F7F8F9;  // 页面背景灰色
-$title-text-color: #444444;// 列表顶部标题颜色
-$item-text-color: #353535; // 块标题颜色
-$main-orange-color: #FF6C00; // 橙色
-$main-orange-background: #FFF0ED;// 橙色背景
-$main-green-color: #1CE36D; // 绿色
-$main-green-background: #E5F8E9;// 绿色背景
-$main-red-color: #FF3924; // 红色
-$auxiliary-color: #CCCCCC; // 辅助颜色
+// 字体系统 Typography System
+$font-size-xs: 20rpx;    // 10px - 极小文字
+$font-size-sm: 24rpx;    // 12px - 小文字
+$font-size-base: 28rpx;  // 14px - 基础文字
+$font-size-md: 32rpx;    // 16px - 中等文字
+$font-size-lg: 36rpx;    // 18px - 大文字
+$font-size-xl: 40rpx;    // 20px - 超大文字
+$font-size-xxl: 48rpx;   // 24px - 标题文字
 
-$toast-color: #A1AEBE; // 提示颜色
-$toast-color-low: #D0D5DB; // 弱提示颜色
-$weak-background-color: #F9FAFC; // 弱的颜色
-$gray-color-low: #CCC; // 浅灰色
-$linear-color: linear-gradient(270deg,#2e9aff, #007ff2); // 主要渐变色
-$error-color: #F26158; // 错误颜色
-$answer-error-bg-color: #fffaf9; // 做题选项答错背景
-$answer-right-bg-color: #f6fbff; // 做题选项答对背景
-$collapse-bg-color: #F3F6FB; // 折叠面板二级背景颜色
-// 颜色 -------------------  end -------------
+$font-weight-light: 300;
+$font-weight-normal: 400;
+$font-weight-medium: 500;
+$font-weight-semibold: 600;
+$font-weight-bold: 700;
+
+// 颜色系统 Color System
+// 主色调 Primary Colors
+$primary-50: #E3F2FD;
+$primary-100: #BBDEFB;
+$primary-200: #90CAF9;
+$primary-300: #64B5F6;
+$primary-400: #42A5F5;
+$primary-500: #1A9AFF;  // 主色调
+$primary-600: #1976D2;
+$primary-700: #1565C0;
+$primary-800: #0D47A1;
+$primary-900: #0A3D91;
+
+// 中性色 Neutral Colors
+$neutral-50: #FAFAFA;
+$neutral-100: #F5F5F5;
+$neutral-200: #EEEEEE;
+$neutral-300: #E0E0E0;
+$neutral-400: #BDBDBD;
+$neutral-500: #9E9E9E;
+$neutral-600: #757575;
+$neutral-700: #616161;
+$neutral-800: #424242;
+$neutral-900: #212121;
+
+// 语义化颜色 Semantic Colors
+$success-color: #1CE36D;
+$success-bg: #E5F8E9;
+$warning-color: #FF6C00;
+$warning-bg: #FFF0ED;
+$error-color: #FF3924;
+$error-bg: #FFFAF9;
+$info-color: #1A9AFF;
+$info-bg: #F6FBFF;
+
+// 文字颜色 Text Colors
+$text-primary: #212121;     // 主要文字
+$text-secondary: #616161;   // 次要文字
+$text-tertiary: #9E9E9E;    // 辅助文字
+$text-disabled: #BDBDBD;    // 禁用文字
+$text-inverse: #FFFFFF;     // 反色文字
+
+// 背景颜色 Background Colors
+$bg-primary: #FFFFFF;       // 主背景
+$bg-secondary: #FAFAFA;     // 次背景
+$bg-tertiary: #F5F5F5;      // 三级背景
+$bg-page: #F7F8F9;          // 页面背景
+$bg-card: #FFFFFF;          // 卡片背景
+$bg-overlay: rgba(0, 0, 0, 0.4); // 遮罩背景
+
+// 边框颜色 Border Colors
+$border-light: #F0F0F0;
+$border-base: #E0E0E0;
+$border-dark: #BDBDBD;
+
+// 间距系统 Spacing System
+$spacing-xs: 8rpx;    // 4px
+$spacing-sm: 16rpx;   // 8px
+$spacing-base: 24rpx; // 12px
+$spacing-md: 32rpx;   // 16px
+$spacing-lg: 48rpx;   // 24px
+$spacing-xl: 64rpx;   // 32px
+$spacing-xxl: 96rpx;  // 48px
+
+// 圆角系统 Border Radius System
+$radius-xs: 4rpx;     // 2px
+$radius-sm: 8rpx;     // 4px
+$radius-base: 12rpx;  // 6px
+$radius-md: 16rpx;    // 8px
+$radius-lg: 24rpx;    // 12px
+$radius-xl: 32rpx;    // 16px
+$radius-round: 50%;
+$radius-pill: 9999rpx;
+
+// 阴影系统 Shadow System
+$shadow-xs: 0 2rpx 8rpx rgba(0, 0, 0, 0.04);
+$shadow-sm: 0 2rpx 16rpx rgba(0, 0, 0, 0.08);
+$shadow-base: 0 4rpx 24rpx rgba(0, 0, 0, 0.12);
+$shadow-lg: 0 8rpx 32rpx rgba(0, 0, 0, 0.16);
+$shadow-xl: 0 16rpx 48rpx rgba(0, 0, 0, 0.20);
+
+// 兼容旧变量 Legacy Variables (保持向后兼容)
+$main-color: $primary-500;
+$main-background: $bg-secondary;
+$main-font-color: $text-primary;
+$second-font-color: $text-secondary;
+$border-color: $border-base;
+$background-color: $bg-tertiary;
+$page-bg-color: $bg-page;
+$title-text-color: $text-primary;
+$item-text-color: $text-primary;
+$main-orange-color: $warning-color;
+$main-orange-background: $warning-bg;
+$main-green-color: $success-color;
+$main-green-background: $success-bg;
+$main-red-color: $error-color;
+$auxiliary-color: $neutral-400;
+$toast-color: $neutral-500;
+$toast-color-low: $neutral-300;
+$weak-background-color: $bg-secondary;
+$gray-color-low: $neutral-300;
+$linear-color: linear-gradient(270deg, $primary-400, $primary-600);
+$error-color: $error-color;
+$answer-error-bg-color: $error-bg;
+$answer-right-bg-color: $info-bg;
+$collapse-bg-color: $bg-tertiary;
+
+// 字体兼容 Font Compatibility
+$main-size: $font-size-base;
+$title-size: $font-size-lg;
+$small-size: $font-size-sm;
 
 
 // 样式 -------------------  begin -------------
